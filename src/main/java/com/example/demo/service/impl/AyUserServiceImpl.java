@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 
+import com.example.demo.dao.AyUserDao;
 import com.example.demo.entity.AyUser;
 import com.example.demo.repository.AyUserRepository;
 import com.example.demo.service.AyUserService;
@@ -23,6 +24,9 @@ public class AyUserServiceImpl implements AyUserService {
 
     @Resource(name = "ayUserRepository")
     private AyUserRepository ayUserRepository;
+
+    @Resource
+    private AyUserDao ayUserDao;
 
 
 //    @Override
@@ -69,6 +73,11 @@ public class AyUserServiceImpl implements AyUserService {
     @Override
     public List<AyUser> findByIdIn(Collection<String> ids) {
         return this.ayUserRepository.findByIdIn(ids);
+    }
+
+    @Override
+    public AyUser findByNameAndPassword(String name, String password) {
+        return this.ayUserDao.findByNameAndPassword(name,password);
     }
 
 

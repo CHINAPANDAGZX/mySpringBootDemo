@@ -30,4 +30,6 @@ public interface AyUserService {
     List<AyUser> findByNameLike(String name);
 
     List<AyUser> findByIdIn(Collection<String> ids);
+
+    AyUser findByNameAndPassword(String name,String password);
 }

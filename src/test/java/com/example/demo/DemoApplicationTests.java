@@ -23,6 +23,8 @@ import java.util.List;
 public class DemoApplicationTests {
     @Resource
     private JdbcTemplate jdbcTemplate;
+    @Resource
+    private AyUserService ayUserService;
 
     @Test
     public void contextLoads() {
@@ -47,8 +49,7 @@ public class DemoApplicationTests {
         }
     }
     //=============================JPA功能整合测试部分开始=======================================//
-    @Resource
-    private AyUserService ayUserService;
+
 
     @Test
     public void testRepository() {
@@ -84,5 +85,12 @@ public class DemoApplicationTests {
 
     }
     //=============================JPA功能整合测试部分结束=======================================//
+    //=============================集成mybatis功能部分开始=======================================//
+    @Test
+    public void testMybatis(){
+        AyUser ayUser = ayUserService.findByNameAndPassword("小明","123456");
+        System.out.println("查找到用户！用户名："+ayUser.getName()+",密码："+ayUser.getPassword());
+    }
+    //=============================集成mybatis功能部分结束=======================================//
 
 }

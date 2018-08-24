@@ -1,12 +1,20 @@
 package com.example.demo.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * 描述：用户表
  * 作者：gzx
  * 日期：2018年8月24日09:55:01
  */
+@Entity
+@Table(name="ay_user")
+
 public class AyUser {
     //主键
+    @Id
     private String id;
     //用户名
     private String name;

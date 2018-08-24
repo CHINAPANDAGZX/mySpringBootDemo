@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Title: MainController.java
- * @Package com.xmrbi.gdsegs.controller.security
+ * @Package com.example.demo.controller.security
  * @Description: TODO(用一句话描述该文件做什么)
  * @author gzx
  * @date 2018年8月23日11:49:31

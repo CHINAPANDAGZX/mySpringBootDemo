@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+	<title>实名制考勤系统</title>
+	<link rel="stylesheet" th:href="@{bootstrap/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" th:href="@{dist/css/font-awesome.min.css}"/>
+	<link rel="stylesheet" th:href="@{dist/css/ionicons.min.css}"/>
+	<link rel="stylesheet" th:href="@{plugins/jvectormap/jquery-jvectormap-1.2.2.css}"/>
+	<!-- tabs -->
+	<link rel="stylesheet" th:href="@{dist/css/bootstrap-addtabs.css}"/>
+	<!-- Theme style -->
+	<link rel="stylesheet" th:href="@{dist/css/AdminLTE.min.css}"/>
+	<link rel="stylesheet" th:href="@{dist/css/skins/_all-skins.min.css}"/>
+	<link rel="stylesheet" th:href="@{css/common.css}"/>
+	<link rel="stylesheet" th:href="@{plugins/bootstrap-toggle/bootstrap-toggle.min.css}"/>
+	<!-- flavr -->
+    <link rel="stylesheet" th:href="@{plugins/flavr/css/style.css}" />
+   	<link rel="stylesheet" th:href="@{plugins/flavr/css/animate.css}" />
+    <link rel="stylesheet" th:href="@{plugins/flavr/css/flavr.css}" />
+	<style type="text/css">
+		html,body{min-height:100%;}
+		.inline{display:block;}
+		.nav-tabs-custom>.nav-tabs>li.active>a, .nav-tabs-custom>.nav-tabs>li.active:hover>a{background-color: #ecf0f5;}
+	    .nav-tabs-custom>.tab-content{padding:0;}
+	    .nav-tabs-custom>.nav-tabs>li.active>a, .nav-tabs-custom>.nav-tabs>li.active:hover>a{padding-bottom:8px;}
+	    .nav-tabs-custom>.nav-tabs{
+	    	/* box-shadow: 0px 1px 10px 0px #949494; */
+	    	background-color: #fdfdfd;
+	    }
+	    .close-tab{right: 2px;top: 0;}
+	    .nav-tabs-custom>.nav-tabs>li{
+	    	border-top:0;
+	    	margin-bottom: -2px;
+    		margin-right: 5px;
+	    }
+	    .sidebar-toggle{
+	    	position: absolute;
+	    	top:0;
+	    	left:0;
+	    	height:41px;
+	    	width:20px;
+	    	background-color: #fdfdfd;
+    		line-height: 41px;
+   		    border-bottom: 1px solid #f4f4f4;
+	    }
+	    .main-nodata{
+	    	display: -webkit-flex;
+		    display: flex;
+		    -webkit-justify-content:center;
+		    justify-content:center;
+		    align-items:center;
+		    -webkit-align-items: center;
+	        position: absolute;
+	        text-align:center;
+		    width: 100%;
+		    height: 100%;
+		    z-index:-1;
+	    }
+	    .main-nodata h5{
+	    	position:absolute;
+	    	top:229px;
+	    	left:0;
+	    	right:0;
+	    	text-align: center;
+	    	color:#777;
+	    	font-size:18px;
+	    }
+	    .modal-dialog{margin:8px auto;box-shadow: rgb(66, 62, 62) 0px 0px 5px 1px;}
+	</style>
+</head>
+<body class="hold-transition skin-blue" style="overflow: hidden;">
+<div class="wrapper">
+	<aside class="main-sidebar" style="padding-top:0;">
+    <section class="sidebar">
+    	<ul id="menuTree" class="sidebar-menu"></ul>
+    </section>
+  </aside>
+  <div class="content-wrapper" style="position: relative;background: #fff;">
+  	<div class="main-nodata">
+  		<div style="position: relative;">
+  			<img th:src="@{images/main-nodata.png}"/>
+  			<h5>欢迎进入工地实名制考勤管理平台</h5>
+  		</div>
+  	</div>
+	<!-- tabs start-->
+   	<div id="tabs" class="nav-tabs-custom" style="height:100%;">
+   		<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        	<span class="fa fa-fw fa-navicon"></span>
+      	</a>    
+    	<ul class="nav nav-tabs" role="tablist" style="margin-left:20px;height:41px;">
+    	</ul>
+		<!-- Tab panes -->
+        <div class="tab-content">
+        </div>
+   	</div>
+   	<!-- tabs end-->
+  </div>
+</div>
+<!-- frame窗口信息 -->
+<div class="modal fade modal-primary" id="common_frame_win" role="dialog" data-backdrop="false" aria-hidden="true">
+	<div class="modal-dialog" style="width:1024px;">
+      	<div class="modal-content" style="background-color:rgba(255, 255, 255, 0);">
+	        <div class="modal-header" style="padding:5px;">
+	          	<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top:0;">
+	            	<span aria-hidden="true">&times;</span>
+	            </button>
+	            <button type="button" class="close max-btn" style="margin-right:5px;margin-top: -1px;" onclick="fnMaxModalWin(this)">
+	            	<i class="fa fa-square-o" style="font-size:16px;"></i>
+	            </button>
+	          	<h4 class="modal-title" style="text-align:left;"></h4>
+	        </div>
+	        <div class="modal-body" style="height: 550px;padding:0px;background-color: rgba(3, 51, 101, 0.9) !important;">
+	          	<iframe style="width: 100%;height:100%;border:0;"></iframe>
+	        </div>
+      	</div>
+	</div>
+</div>
+<!-- 附件上传通用窗口 -->
+<div class="modal fade modal-info" id="upload_annex_win" role="dialog" data-backdrop="false" aria-hidden="true">
+	<div class="modal-dialog" style="width:900px;">
+      	<div class="modal-content" style="background-color:rgba(255, 255, 255, 0);">
+	        <div class="modal-header" style="padding:5px;">
+	          	<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top:0;">
+	            	<span aria-hidden="true">&times;</span>
+	            </button>
+	            <button type="button" class="close" style="margin-right:5px;margin-top: -1px;" onclick="fnMaxModalWin2(this)">
+	            	<i class="fa fa-square-o" style="font-size:16px;"></i>
+	            </button>
+	          	<h4 class="modal-title" style="text-align:center;"></h4>
+	        </div>
+	        <div class="modal-body" style="height: 500px;padding:0px;background-color: rgba(3, 51, 101, 0.9) !important;">
+	          	<iframe id="annexFrame" name="annexFrame" style="width: 100%;height:100%;border:0;"></iframe>
+	        </div>
+      	</div>
+	</div>
+</div>
+<!-- 通用查看图片窗口 -->
+<div class="modal fade" id="common_viewimg_win" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" aria-hidden="true">
+	<div class="modal-dialog" style="width:800px;">
+		<div class="modal-content">
+			<div class="modal-header" style="padding:10px;">
+			 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">图片查看</h4>
+			</div>
+			<div class="modal-body" style="overflow: hidden; padding: 10px;">
+				
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{plugins/jQuery/jquery-2.2.3.min.js}"></script>
+<script type="text/javascript" th:src="@{bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{js/myTreeView.js}"></script>
+<script type="text/javascript" th:src="@{js/common.js}"></script>
+<!-- tabs -->
+<script type="text/javascript" th:src="@{dist/js/bootstrap-addtabs.js}"></script>
+<script type="text/javascript" th:src="@{dist/js/app.min.js}"></script>
+<script type="text/javascript" th:src="@{plugins/bootstrap-toggle/bootstrap-toggle.min.js}"></script>
+<script type="text/javascript" th:src="@{plugins/bootstrap-validator/js/bootstrapValidator.min.js}"></script>
+<!-- flavr js -->
+<script type="text/javascript" th:src="@{plugins/flavr/js/flavr.min.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/
+	var CTX = [[@{/}]];
+	// var STATIC = [[@{}]];
+	$(function(){
+		//tab初始化
+		$('#tabs').addtabs({monitor:'.topbar'});
+		
+		//初始化菜单树
+		initMenuTree();
+		
+		
+		//附件管理弹窗关闭事件
+		$('#upload_annex_win').on('hidden.bs.modal',function(){
+			var returnData = $('#upload_annex_win iframe')[0].contentWindow.parentCallBack();//window.frames['annexFrame'].window.parentCallBack();//
+			$('#upload_annex_win iframe').removeAttr('src');
+			if(ANNEX_CALLBACK){
+				ANNEX_CALLBACK(returnData);
+			}
+			ANNEX_CALLBACK = null;
+		});
+		//查看图片窗口关闭事件
+		$('#common_viewimg_win').on('hidden.bs.modal',function(){
+			$('#common_viewimg_win modal-body').empty();
+		});
+		
+		//初始化通用frame弹窗关闭事件
+		$('#common_frame_win').on('hidden.bs.modal',function(){
+			$('#common_frame_win iframe').removeAttr('src');
+			$('#common_frame_win .modal-title').html('');
+			//还原窗口大小
+			$('#common_frame_win').css({'overflow-y':'auto'});
+			$('#common_frame_win').find('.modal-dialog').css({width:oldWinW+'px',margin:'30px auto'});
+			$('#common_frame_win').find('.modal-body').css({height:oldWinH+'px'});
+			$('#common_frame_win .max-btn').find('i').removeClass('fa-clone');
+			$('#common_frame_win .max-btn').find('i').addClass('fa-square-o');
+		});
+		$('#common_frame_win').on('show.bs.modal',function(){
+			if(oldWinH>($(window).height()-100)){
+				oldWinH = $(window).height()-100;
+				$('#common_frame_win .modal-body').height(oldWinH);
+			}
+		});
+		$('#common_frame_win').find('iframe').on('load',function(){
+			$('#common_frame_win .modal-title').html($(this).contents().attr("title"));
+		});
+	});
+	
+	function initMenuTree(){
+		var menuTree = new MyTreeview({
+			id:'menuTree',
+			title:'功能菜单',
+			data:[{
+				id:'0',
+				text:'人员管理',
+				icon:'fa fa-user-secret',
+				url:'frame:',
+				selectable:false,
+				backColor:'#F5F5F5',
+				nodes:[{
+					id:'1',
+					text:'集团内部人员',
+					icon:'fa fa-user-secret',
+					url:'frame:main/personnel-manage.html?userType=1'
+				},{
+					id:'2',
+					text:'外场人员',
+					icon:'fa fa-user',
+					url:'frame:main/personnel-manage.html?userType=2'
+				},{
+					id:'3',
+					text:'临时人员',
+					icon:'fa fa-user',
+					url:'frame:main/personnel-manage.html?userType=3'
+				}]
+			},{
+				id:'4',
+				text:'考勤信息',
+				icon:'fa fa-hand-o-up',
+				url:'frame:main/atte-infomation-manage.html'
+			},{
+				id:'5',
+				text:'设备管理',
+				icon:'fa fa-archive',
+				url:'frame:main/device-manage.html'
+			},{
+				id:'6',
+				text:'考勤报表',
+				icon:'fa fa-hand-o-up',
+				url:'frame:attendance-report/list.html'
+			},{
+				id:'7',
+				text:'考勤设置',
+				icon:'fa fa-gear',
+				url:'frame:count-set/list.html'
+			},{
+                id:'8',
+                text:'考勤机下发规则',
+                icon:'fa fa-gear',
+                url:'frame:main/send-rule.html'
+            },{
+				id:'9',
+				text:'基础数据',
+				icon:'fa fa-database',
+				url:'frame:',
+				selectable:false,
+				backColor:'#F5F5F5',
+				nodes:[{
+					id:'9',
+					text:'管理人员类型',
+					icon:'fa fa-circle-o',
+					url:'frame:admin-type/list.html'
+				},{
+					id:'10',
+					text:'工种管理',
+					icon:'fa fa-circle-o',
+					url:'frame:work-type/list.html'
+				},{
+					id:'10',
+					text:'单位类型',
+					icon:'fa fa-circle-o',
+					url:'frame:useunit-type/list.html'
+				}]
+			}],
+			nodeClick:function(node){
+				var url = node.url;
+				if(url.substring(0,url.indexOf(':'))=='frame'){
+					if(url.substring(url.indexOf(':')+1)!=''){
+						Addtabs.add({
+				            id: node.id,
+				            icon: node.icon,
+				            title: node.name,
+				            close: true,
+				            url: CTX+url.substring(url.indexOf(':')+1)
+			         	});
+					}
+				}
+			}
+		});
+	}
+	
+	//子页面调用的window窗口
+	var COMMON_CALLBACK = null;
+	function openCommonFrameWin(url,width,height,callback){
+		if(width!=null){
+			oldWinW = width;
+		}
+		if(height!=null){
+			oldWinH = height;
+		}
+		$('#common_frame_win .modal-dialog').width(oldWinW);
+		$('#common_frame_win .modal-body').height(oldWinH);
+		$('#common_frame_win').modal('toggle');
+		window.setTimeout(function(){
+			$('#common_frame_win iframe').attr('src',url);	
+		},300);
+		COMMON_CALLBACK = callback;
+	}
+	//供子页面调用的关闭通用窗口函数
+	function closeCommonFrameWin(returnData){
+		$('#common_frame_win').modal('toggle');
+		//如果有回调则调用回调
+		if(COMMON_CALLBACK){
+			COMMON_CALLBACK(returnData);
+		}
+		COMMON_CALLBACK = null;
+	}
+	/**
+	 * 最大最小化modal窗口
+	 * @param _this
+	 * @returns
+	 */
+	var oldWinW = window.screen.availWidth-100,oldWinH = window.screen.availHeight-130;
+	function fnMaxModalWin(_this){
+		if($(_this).find('i').hasClass('fa-square-o')){
+			//执行最大化窗口
+			$(_this).parent().parent().parent().parent().css({'overflow-y':'hidden'});
+			$(_this).parent().parent().parent().css({width:$(window).width()+'px',margin:'0px auto'});
+			$(_this).parent().next().css({height:($(window).height()-$(_this).parent().outerHeight())+'px'});
+			$(_this).find('i').removeClass('fa-square-o');
+			$(_this).find('i').addClass('fa-clone');
+		}else{
+			//还原窗口大小
+			$(_this).parent().parent().parent().parent().css({'overflow-y':'auto'});
+			$(_this).parent().parent().parent().css({width:oldWinW+'px',margin:'8px auto'});
+			$(_this).parent().next().css({height:oldWinH+'px'});
+			$(_this).find('i').removeClass('fa-clone');
+			$(_this).find('i').addClass('fa-square-o');
+		}
+	}
+	
+	
+	var ANNEX_CALLBACK = null;
+	//子页面打开附件管理窗口
+	function openUploadAnnexWin(jsonData,callback){
+		$('#upload_annex_win .modal-title').html('附件管理-'+jsonData.folderName);
+		$('#upload_annex_win').modal('toggle');
+		window.setTimeout(function(){
+			var url = CTX+'annex/list.html?folderId='+jsonData.folderId+'&annexIds='+jsonData.annexIds;
+			$('#upload_annex_win iframe').attr('src',url);	
+		},300);
+		ANNEX_CALLBACK = callback;
+	}
+	//附件子页面回调
+	function closeUploadAnnexWin(){
+		$('#upload_annex_win').modal('toggle');
+	}
+	
+	//打开图片查看窗口
+	function openCommonViewImgWin(annexIds){
+		if(annexIds==''||annexIds==null||annexIds==undefined){
+			flavrAlert('附件不存在',false);
+			return;
+		}
+		loading('加载中...');
+		$.ajax({
+			url:CTX+'annex/query-annex',
+			type:'get',
+			dataType:'json',
+			timeout:10000,
+			data: {annexIds:annexIds},
+			success:function(json){
+				loaded();
+				if(json&&json.length>0){
+					var liStr = '',imgStr = '';
+					$.each(json,function(i,annex){
+						if(annex.extendName.toLowerCase()=='jpg'||annex.extendName.toLowerCase()=='jpeg'||
+								annex.extendName.toLowerCase()=='bmp'||annex.extendName.toLowerCase()=='gif'||
+								annex.extendName.toLowerCase()=='png'){
+							liStr += '<li data-target="#myCarousel" data-slide-to="'+i+'" '+(i==0?'class="active"':'')+'></li>';
+							imgStr += 
+								'<div class="item '+(i==0?'active':'')+'">'+
+								'	<img src="'+STATIC+annex.relativePath+'" alt="'+annex.name+'" onerror="this.src=\''+STATIC+'images/noPicture.jpg\';" style="margin:0 auto;max-width:100%;"/>'+
+								// '	<div class="carousel-caption">'+annex.name+'</div>'+
+								'</div>';
+						}
+					});
+					if(liStr!=''&&imgStr!=''){
+						$('#common_viewimg_win .modal-body').html(
+							'<div id="myCarousel" class="carousel slide">'+
+							'<ol class="carousel-indicators">'+
+							liStr+
+							'</ol>'+
+							'<div class="carousel-inner">'+
+							imgStr+
+							'</div>'+
+							'<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">'+
+							'    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'+
+							'    <span class="sr-only">Previous</span>'+
+							'</a>'+
+							'<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">'+
+							'    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'+
+							'    <span class="sr-only">Next</span>'+
+							'</a>'+
+							'</div>'
+						);
+						$('#common_viewimg_win').modal('toggle');
+					}else{
+						$.each(json,function(i,annex){
+							window.location.href = STATIC+annex.relativePath;
+						});
+					}
+				}else{
+					$('#common_viewimg_win').modal('toggle');
+					$('#common_viewimg_win .modal-body').html('<div class="img_div" style="width:100%; height:100%;text-align:center;"><img src="'+STATIC+'images/noPicture.jpg" style="max-width:100%;height:auto;"/></div>');
+				}
+			},
+			error:function(){
+				flavrAlert('请求超时或系统错误',false);
+				loaded();
+			}
+		});
+	}
+/*]]>*/		
+</script>
+</html>

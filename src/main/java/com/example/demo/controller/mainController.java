@@ -29,7 +29,22 @@ public class mainController {
         System.out.println("==========================");
         System.out.println("显示主页");
         System.out.println("==========================");
-        return "home";
+        return "main";
+    }
+
+    @RequestMapping("login")
+    public String showLogin(HttpServletRequest request){
+        System.out.println("==========================");
+        System.out.println("显示登录页");
+        System.out.println("==========================");
+        return "login";
+    }
+    @RequestMapping("console")
+    public String showConsole(HttpServletRequest request){
+        System.out.println("==========================");
+        System.out.println("显示控制台");
+        System.out.println("==========================");
+        return "console";
     }
 
     @RequestMapping("page1")

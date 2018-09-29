@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
+    <!--<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>-->
     <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/plugins/jQuery/jquery-2.2.3.min.js}"></script>
     <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
@@ -94,20 +95,22 @@
                 </ul>
                 <div class="row clearfix">
                     <div class="col-md-3 column">
-                        <div class="panel-group" id="panel-24955">
+                        <div class="panel-group" id="myMenuTree">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-24955" href="#panel-element-232263">Collapsible Group Item #1</a>
+                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-24955" href="#panel-element-232263">菜单一</a>
                                 </div>
                                 <div id="panel-element-232263" class="panel-collapse collapse">
                                     <div class="panel-body">
-                                        Anim pariatur cliche...
+                                        <li style="list-style-type:none">
+                                            <a>子菜单一</a>
+                                        </li>
                                     </div>
                                 </div>
                             </div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <a class="panel-title" data-toggle="collapse" data-parent="#panel-24955" href="#panel-element-241337">Collapsible Group Item #2</a>
+                                    <a class="panel-title" data-toggle="collapse" data-parent="#panel-24955" href="#panel-element-241337">菜单二</a>
                                 </div>
                                 <div id="panel-element-241337" class="panel-collapse in">
                                     <div class="panel-body">

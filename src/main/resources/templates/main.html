@@ -1,52 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="utf-8" />
+	<meta charset="UTF-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<!-- Tell the browser to be responsive to screen width -->
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
-	<title>实名制考勤系统</title>
-	<link rel="stylesheet" th:href="@{bootstrap/css/bootstrap.min.css}"/>
-	<link rel="stylesheet" th:href="@{dist/css/font-awesome.min.css}"/>
-	<link rel="stylesheet" th:href="@{dist/css/ionicons.min.css}"/>
-	<link rel="stylesheet" th:href="@{plugins/jvectormap/jquery-jvectormap-1.2.2.css}"/>
-	<!-- tabs -->
-	<link rel="stylesheet" th:href="@{dist/css/bootstrap-addtabs.css}"/>
+	<title>工地实名制考勤管理平台</title>
+	<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" th:href="@{/dist/css/font-awesome.min.css}"/>
+	<link rel="stylesheet" th:href="@{/dist/css/ionicons.min.css}"/>
+	<link rel="stylesheet" th:href="@{/plugins/jvectormap/jquery-jvectormap-1.2.2.css}"/>
 	<!-- Theme style -->
-	<link rel="stylesheet" th:href="@{dist/css/AdminLTE.min.css}"/>
-	<link rel="stylesheet" th:href="@{dist/css/skins/_all-skins.min.css}"/>
-	<link rel="stylesheet" th:href="@{css/common.css}"/>
-	<link rel="stylesheet" th:href="@{plugins/bootstrap-toggle/bootstrap-toggle.min.css}"/>
-	<!-- flavr -->
-    <link rel="stylesheet" th:href="@{plugins/flavr/css/style.css}" />
-   	<link rel="stylesheet" th:href="@{plugins/flavr/css/animate.css}" />
-    <link rel="stylesheet" th:href="@{plugins/flavr/css/flavr.css}" />
+	<link rel="stylesheet" th:href="@{/dist/css/AdminLTE.min.css}"/>
+	<link rel="stylesheet" th:href="@{/dist/css/skins/_all-skins.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/common.css}"/>
+	<link rel="stylesheet" th:href="@{/plugins/bootstrap-toggle/bootstrap-toggle.min.css}"/>
 	<style type="text/css">
-		html,body{min-height:100%;}
-		.inline{display:block;}
-		.nav-tabs-custom>.nav-tabs>li.active>a, .nav-tabs-custom>.nav-tabs>li.active:hover>a{background-color: #ecf0f5;}
-	    .nav-tabs-custom>.tab-content{padding:0;}
-	    .nav-tabs-custom>.nav-tabs>li.active>a, .nav-tabs-custom>.nav-tabs>li.active:hover>a{padding-bottom:8px;}
-	    .nav-tabs-custom>.nav-tabs{
-	    	/* box-shadow: 0px 1px 10px 0px #949494; */
-	    	background-color: #fdfdfd;
-	    }
-	    .close-tab{right: 2px;top: 0;}
-	    .nav-tabs-custom>.nav-tabs>li{
-	    	border-top:0;
-	    	margin-bottom: -2px;
-    		margin-right: 5px;
-	    }
-	    .sidebar-toggle{
-	    	position: absolute;
-	    	top:0;
-	    	left:0;
-	    	height:41px;
-	    	width:20px;
-	    	background-color: #fdfdfd;
-    		line-height: 41px;
-   		    border-bottom: 1px solid #f4f4f4;
-	    }
-	    .main-nodata{
+		.header-toolbar{height:65px;line-height: 32px;}
+		.btn-item{text-align: center;vertical-align: middle;color: white;font-size: 30px;padding: 8px 5px;min-width: 70px;}
+		.btn-item:HOVER{cursor: pointer;background:#367fa9;}
+		.btn-item-text{font-size: 14.25px;margin-top:5px;display: block;} 
+		.header-toolbar .with-divider{border-left: 1px solid #fff;padding-left: 10px;}
+		.main-sidebar, .left-side{padding-top:65px;}
+		.actived{background: #367fa9;}
+		.main-nodata{
 	    	display: -webkit-flex;
 		    display: flex;
 		    -webkit-justify-content:center;
@@ -68,111 +45,333 @@
 	    	color:#777;
 	    	font-size:18px;
 	    }
-	    .modal-dialog{margin:8px auto;box-shadow: rgb(66, 62, 62) 0px 0px 5px 1px;}
+	    .box {
+		    border-top: 3px solid rgb(244, 246, 248);
+		    background-color: rgb(244, 246, 248);
+		}
+		.skin-blue .sidebar a {
+		    color: #777;
+		}
+		.skin-blue .sidebar-menu>li.header{
+			background: rgb(244, 246, 248);
+		    color: #3c8dbc;
+    		font-size: 16px;
+		}
+		.skin-blue .sidebar-menu>li.active>a {
+		    color: #3c8dbc;
+		    background: #f4f6f8;
+		    border-left-color: #3c8dbc;
+		}
+		.skin-blue .sidebar-menu>li>.treeview-menu {
+		    margin: 0 1px;
+		    background: #f4f6f8;
+		}
+		.sidebar-menu .treeview-menu>li>a {
+		    padding: 8px 8px 5px 15px;
+		    color: #777;
+		}
+		
+		.skin-blue .sidebar-menu>li>a:hover{
+			background: #00adff;
+			color:#fff;
+		}
+		.active2{background: #00adff;}
+		.active2>a{color:#fff !important;}
+		#iframe-wrap {
+		    width: 100%;
+		    top: 65px;
+		    bottom: 0;
+		    position: fixed;
+		    z-index: 1000;
+		}
+		.dropdown-menu {
+		    border-top-right-radius: 0;
+		    border-top-left-radius: 0;
+		    padding: 1px 0 0 0;
+		    border-top-width: 0;
+		    width: 280px;
+		    position: absolute;
+		    right: 0;
+		    left: auto;
+	        top: 63px;
+		}
+		.dropdown-menu>li.user-header {
+		    height: 180px;
+		    padding: 10px;
+		    text-align: center;
+		    background-color: #3c8dbc;
+		}
+		.dropdown-menu>li.user-header>img {
+		    z-index: 5;
+		    height: 90px;
+		    width: 90px;
+		    border: 3px solid;
+		    border-color: transparent;
+		    border-color: rgba(255,255,255,0.2);
+		}
+		.dropdown-menu>.user-body {
+		    padding: 15px;
+		    border-bottom: 1px solid #f4f4f4;
+		    border-top: 1px solid #dddddd;
+		}
+		.dropdown-menu>.user-footer {
+		    background-color: #f9f9f9;
+		    padding: 10px;
+		}
+		.dropdown-menu>li.user-header>p {
+		    z-index: 5;
+		    color: #fff;
+		    color: rgba(255,255,255,0.8);
+		    font-size: 17px;
+		    margin-top: 10px;
+		}
 	</style>
 </head>
 <body class="hold-transition skin-blue" style="overflow: hidden;">
-<div class="wrapper">
-	<aside class="main-sidebar" style="padding-top:0;">
-    <section class="sidebar">
-    	<ul id="menuTree" class="sidebar-menu"></ul>
-    </section>
-  </aside>
-  <div class="content-wrapper" style="position: relative;background: #fff;">
-  	<div class="main-nodata">
-  		<div style="position: relative;">
-  			<img th:src="@{images/main-nodata.png}"/>
-  			<h5>欢迎进入工地实名制考勤管理平台</h5>
+	<div class="wrapper">
+		<header class="main-header">
+		    <nav class="navbar navbar-static-top" style="margin-left:0">
+		   		<div style="position: absolute;left:0;height:50px;margin-top:5px;">
+		   			<img th:src="@{/images/newlogin/logo-main.png}"/>
+		   		</div>
+		   		<div class="header-toolbar pull-right">
+			    	<!-- <div class="btn-item btn-primary fa fa-desktop" onclick="fnShowDesktop()">
+			    		<span class="btn-item-text">桌面</span>
+			    	</div> -->
+			    	<div th:each="auth:${auths}" th:if="${auth.parentId}==null and ${auth.authorityType}=='1'" th:class="'btn-item btn-primary '+ ${auth.icon}"  th:attr="fieldUrl=${auth.url},fieldId=${auth.id}">
+			    		<span class="btn-item-text" th:text="${auth.name}"></span>
+			    	</div>
+			    	<!-- fa fa-power-off with-divider -->
+			        <div class="btn-item btn-primary fa my-divider" onclick="fnOpenDropdown()">
+			        	<img th:src="@{/dist/img/avatar5.png}" class="profile-user-img img-responsive img-circle" style="width:30px;padding:0;border:0;"/>
+			        	<span class="btn-item-text" th:text="${userinfo.name}"></span>
+			        </div>
+			    </div>
+		    </nav>
+	  	</header>
+	  	<div class="content-wrapper" style="position: relative;background: #fff;margin-left:0;">
+		  	<div class="main-nodata">
+		  		<div style="position: relative;">
+		  			<img th:src="@{/images/main-nodata.png}"/>
+		  			<h5>欢迎进入工地实名制考勤管理平台</h5>
+		  		</div>
+		  	</div>
   		</div>
-  	</div>
-	<!-- tabs start-->
-   	<div id="tabs" class="nav-tabs-custom" style="height:100%;">
-   		<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        	<span class="fa fa-fw fa-navicon"></span>
-      	</a>    
-    	<ul class="nav nav-tabs" role="tablist" style="margin-left:20px;height:41px;">
-    	</ul>
-		<!-- Tab panes -->
-        <div class="tab-content">
+  		<div id="iframe-wrap" style="display: none;">
+	  		<iframe style="width:100%;height:100%;border:0;"></iframe>
+	  	</div>
+	</div>
+	
+   <ul id="my-dropdown-menu" class="dropdown-menu">
+      <li class="user-header">
+        <img th:src="@{/dist/img/avatar5.png}" class="img-circle" alt="User Image"/>
+        <p>
+        	<span th:text="${userinfo.useunit}!=null?${userinfo.useunit.name}:''"></span><br/>
+        	<span th:text="${roleName}"></span>
+        </p>
+        <!-- <small th:text="${curDate}" style="color:#fff;"></small> -->
+      </li>
+      <li class="user-footer" style="overflow: hidden;">
+        <div class="pull-left">
+          <a href="javascript:goEditPwd()" class="btn btn-default btn-flat"><i class="fa fa-edit"></i> 修改密码</a>
         </div>
-   	</div>
-   	<!-- tabs end-->
-  </div>
-</div>
-<!-- frame窗口信息 -->
-<div class="modal fade modal-primary" id="common_frame_win" role="dialog" data-backdrop="false" aria-hidden="true">
-	<div class="modal-dialog" style="width:1024px;">
-      	<div class="modal-content" style="background-color:rgba(255, 255, 255, 0);">
-	        <div class="modal-header" style="padding:5px;">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top:0;">
-	            	<span aria-hidden="true">&times;</span>
-	            </button>
-	            <button type="button" class="close max-btn" style="margin-right:5px;margin-top: -1px;" onclick="fnMaxModalWin(this)">
-	            	<i class="fa fa-square-o" style="font-size:16px;"></i>
-	            </button>
-	          	<h4 class="modal-title" style="text-align:left;"></h4>
-	        </div>
-	        <div class="modal-body" style="height: 550px;padding:0px;background-color: rgba(3, 51, 101, 0.9) !important;">
-	          	<iframe style="width: 100%;height:100%;border:0;"></iframe>
-	        </div>
-      	</div>
+        <div class="pull-right">
+          <a href="javascript:goLoginout()" class="btn btn-default btn-flat"><i class="fa fa-power-off"></i> 注销</a>
+        </div>
+      </li>
+    </ul>
+   	<!-- 编辑框 -->
+	<div class="modal fade" id="editpwd_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title">修改密码</h4>
+	            </div>
+	            <div class="modal-body">
+	            	<form id="editpwd_form" role="form">
+		              	<div class="box-body">
+			                <div class="form-group">
+			                  <label>旧密码</label>
+			                  <input type="password" class="form-control" name="oldPwd" placeholder="请输入原密码"/>
+			                </div>
+			                <div class="form-group">
+			                  <label>新密码</label>
+			                  <input type="password" class="form-control" name="newPwd" placeholder="请输入新密码"/>
+			                </div>
+			                <div class="form-group">
+			                  <label>确认密码</label>
+			                  <input type="password" class="form-control" name="repassword" placeholder="请确认密码"/>
+			                </div>
+		              	</div>
+		            </form>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	                <button type="button" class="btn btn-primary" onclick="goSavePwd(this)">提交</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
 	</div>
-</div>
-<!-- 附件上传通用窗口 -->
-<div class="modal fade modal-info" id="upload_annex_win" role="dialog" data-backdrop="false" aria-hidden="true">
-	<div class="modal-dialog" style="width:900px;">
-      	<div class="modal-content" style="background-color:rgba(255, 255, 255, 0);">
-	        <div class="modal-header" style="padding:5px;">
-	          	<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top:0;">
-	            	<span aria-hidden="true">&times;</span>
-	            </button>
-	            <button type="button" class="close" style="margin-right:5px;margin-top: -1px;" onclick="fnMaxModalWin2(this)">
-	            	<i class="fa fa-square-o" style="font-size:16px;"></i>
-	            </button>
-	          	<h4 class="modal-title" style="text-align:center;"></h4>
-	        </div>
-	        <div class="modal-body" style="height: 500px;padding:0px;background-color: rgba(3, 51, 101, 0.9) !important;">
-	          	<iframe id="annexFrame" name="annexFrame" style="width: 100%;height:100%;border:0;"></iframe>
-	        </div>
-      	</div>
+	
+	<!-- frame窗口信息 -->
+	<div class="modal fade modal-primary" id="common_frame_win" role="dialog" data-backdrop="false" aria-hidden="true">
+		<div class="modal-dialog" style="width:1024px;">
+	      	<div class="modal-content" style="background-color:rgba(255, 255, 255, 0);">
+		        <div class="modal-header" style="padding:5px;">
+		          	<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top:0;">
+		            	<span aria-hidden="true">&times;</span>
+		            </button>
+		            <button type="button" class="close max-btn" style="margin-right:5px;margin-top: -1px;" onclick="fnMaxModalWin(this)">
+		            	<i class="fa fa-square-o" style="font-size:16px;"></i>
+		            </button>
+		          	<h4 class="modal-title"></h4>
+		        </div>
+		        <div class="modal-body" style="height: 550px;padding:0px;background-color: rgba(3, 51, 101, 0.9) !important;">
+		          	<iframe style="width: 100%;height:100%;border:0;"></iframe>
+		        </div>
+	      	</div>
+		</div>
 	</div>
-</div>
-<!-- 通用查看图片窗口 -->
-<div class="modal fade" id="common_viewimg_win" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" aria-hidden="true">
-	<div class="modal-dialog" style="width:800px;">
-		<div class="modal-content">
-			<div class="modal-header" style="padding:10px;">
-			 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title">图片查看</h4>
-			</div>
-			<div class="modal-body" style="overflow: hidden; padding: 10px;">
-				
+	
+	<!-- 附件上传通用窗口 -->
+	<div class="modal fade modal-info" id="upload_annex_win" role="dialog" data-backdrop="false" aria-hidden="true">
+		<div class="modal-dialog" style="width:900px;">
+	      	<div class="modal-content" style="background-color:rgba(255, 255, 255, 0);">
+		        <div class="modal-header" style="padding:5px;">
+		          	<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top:0;">
+		            	<span aria-hidden="true">&times;</span>
+		            </button>
+		            <button type="button" class="close" style="margin-right:5px;margin-top: -1px;" onclick="fnMaxModalWin2(this)">
+		            	<i class="fa fa-square-o" style="font-size:16px;"></i>
+		            </button>
+		          	<h4 class="modal-title" style="text-align:center;"></h4>
+		        </div>
+		        <div class="modal-body" style="height: 500px;padding:0px;background-color: rgba(3, 51, 101, 0.9) !important;">
+		          	<iframe id="annexFrame" name="annexFrame" style="width: 100%;height:100%;border:0;"></iframe>
+		        </div>
+	      	</div>
+		</div>
+	</div>
+	<!-- 通用查看图片窗口 -->
+	<div class="modal fade" id="common_viewimg_win" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" aria-hidden="true">
+		<div class="modal-dialog" style="width:800px;">
+			<div class="modal-content">
+				<div class="modal-header" style="padding:10px;">
+				 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">图片查看</h4>
+				</div>
+				<div class="modal-body" style="overflow: hidden; padding: 10px;">
+					
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </body>
-<script type="text/javascript" th:src="@{plugins/jQuery/jquery-2.2.3.min.js}"></script>
-<script type="text/javascript" th:src="@{bootstrap/js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{js/myTreeView.js}"></script>
-<script type="text/javascript" th:src="@{js/common.js}"></script>
-<!-- tabs -->
-<script type="text/javascript" th:src="@{dist/js/bootstrap-addtabs.js}"></script>
-<script type="text/javascript" th:src="@{dist/js/app.min.js}"></script>
-<script type="text/javascript" th:src="@{plugins/bootstrap-toggle/bootstrap-toggle.min.js}"></script>
-<script type="text/javascript" th:src="@{plugins/bootstrap-validator/js/bootstrapValidator.min.js}"></script>
-<!-- flavr js -->
-<script type="text/javascript" th:src="@{plugins/flavr/js/flavr.min.js}"></script>
 <script type="text/javascript" th:inline="javascript">
 /*<![CDATA[*/
 	var CTX = [[@{/}]];
-	// var STATIC = [[@{}]];
+/*]]>*/	
+</script>
+<script type="text/javascript" th:src="@{/plugins/jQuery/jquery-2.2.3.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/dist/js/app.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/bootstrap-toggle/bootstrap-toggle.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/bootstrap-validator/js/bootstrapValidator.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/attention/zDialog/zDrag.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/attention/zDialog/zDialog.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/
+	var STATIC = [[@{/}]];
 	$(function(){
-		//tab初始化
-		$('#tabs').addtabs({monitor:'.topbar'});
+		if($('.header-toolbar .btn-item').length>0){
+			$('.header-toolbar .btn-item').each(function(){
+				$(this).addClass('actived');
+				var url = $(this).attr('fieldUrl');
+				var authId = $(this).attr('fieldId');
+				if(url.substring(0,url.indexOf(':'))=='frame'){
+					$('#iframe-wrap').fadeIn('fast',function(){
+						$('.main-sidebar').hide();
+						$('.content-wrapper').hide();
+					});
+					$('#iframe-wrap iframe').attr('src',CTX+url.substring(url.indexOf(':')+1)+'?authId='+authId);
+				}
+				return false;
+			});
+		}
 		
-		//初始化菜单树
-		initMenuTree();
+		
+		$('.header-toolbar').on('click','.btn-item',function(){
+			if($(this).attr('fieldUrl')!=undefined && $(this).attr('fieldUrl')!=null){
+				$('.header-toolbar .btn-item').removeClass('actived');
+				$(this).addClass('actived');
+				var url = $(this).attr('fieldUrl');
+				var authId = $(this).attr('fieldId');
+				if(url.substring(0,url.indexOf(':'))=='frame'){
+					$('#iframe-wrap').fadeIn('fast',function(){
+						$('.main-sidebar').hide();
+						$('.content-wrapper').hide();
+					});
+					$('#iframe-wrap iframe').attr('src',CTX+url.substring(url.indexOf(':')+1)+'?authId='+authId);
+				}
+			}
+		});
+		
+		$('.sidebar-menu').on('click','a',function(){
+			$('.sidebar-menu li').removeClass('active2');
+			if($(this).attr('value')!=undefined && $(this).attr('value')!=null){
+				$(this).parent().addClass('active2');
+			}
+		});
+		
+		//初始化表单验证
+		$('#editpwd_form').bootstrapValidator({
+			message: '此处输入有误',
+	        excluded: [':disabled'],
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields:{
+	        	'oldPwd':{
+	        		message: '原密码输入不合法',
+	                validators: {
+	                    notEmpty: {
+	                        message: '原密码不可为空'
+	                    }
+	                }
+	        	},'newPwd':{
+	        		message: '新密码输入不合法',
+	                validators: {
+	                    notEmpty: {
+	                        message: '新密码不可为空'
+	                    },
+	                    identical: {//相同
+                         	field: 'repassword', //需要进行比较的input name值
+                         	message: '两次密码不一致'
+                     	}
+	                }
+	        	},
+	        	'repassword':{
+	        		message: '确认密码输入不合法',
+	                validators: {
+	                	notEmpty: {
+	                        message: '确认密码不可为空'
+	                    },	
+	                    identical: {//相同
+	                         field: 'newPwd',
+	                         message: '两次密码不一致'
+                     	}
+	                }
+	        	}
+	        }
+		});
+		//修改密码弹窗关闭事件
+		$('#editpwd_modal').on('hidden.bs.modal',function(){
+			$('#editpwd_form').bootstrapValidator('resetForm', true);
+		});
 		
 		
 		//附件管理弹窗关闭事件
@@ -187,6 +386,12 @@
 		//查看图片窗口关闭事件
 		$('#common_viewimg_win').on('hidden.bs.modal',function(){
 			$('#common_viewimg_win modal-body').empty();
+		});
+		
+		$(document).on('click',function(e){
+			if($(e.target).closest(".my-divider").length == 0){
+				$('#my-dropdown-menu').fadeOut('fast');
+			}
 		});
 		
 		//初始化通用frame弹窗关闭事件
@@ -211,132 +416,55 @@
 		});
 	});
 	
-	function initMenuTree(){
-		var menuTree = new MyTreeview({
-			id:'menuTree',
-			title:'功能菜单',
-			data:[{
-				id:'0',
-				text:'人员管理',
-				icon:'fa fa-user-secret',
-				url:'frame:',
-				selectable:false,
-				backColor:'#F5F5F5',
-				nodes:[{
-					id:'1',
-					text:'集团内部人员',
-					icon:'fa fa-user-secret',
-					url:'frame:main/personnel-manage.html?userType=1'
-				},{
-					id:'2',
-					text:'外场人员',
-					icon:'fa fa-user',
-					url:'frame:main/personnel-manage.html?userType=2'
-				},{
-					id:'3',
-					text:'临时人员',
-					icon:'fa fa-user',
-					url:'frame:main/personnel-manage.html?userType=3'
-				}]
-			},{
-				id:'4',
-				text:'考勤信息',
-				icon:'fa fa-hand-o-up',
-				url:'frame:main/atte-infomation-manage.html'
-			},{
-				id:'5',
-				text:'设备管理',
-				icon:'fa fa-archive',
-				url:'frame:main/device-manage.html'
-			},{
-				id:'6',
-				text:'考勤报表',
-				icon:'fa fa-hand-o-up',
-				url:'frame:attendance-report/list.html'
-			},{
-				id:'7',
-				text:'考勤设置',
-				icon:'fa fa-gear',
-				url:'frame:count-set/list.html'
-			},{
-                id:'8',
-                text:'考勤机下发规则',
-                icon:'fa fa-gear',
-                url:'frame:main/send-rule.html'
-            },{
-				id:'9',
-				text:'基础数据',
-				icon:'fa fa-database',
-				url:'frame:',
-				selectable:false,
-				backColor:'#F5F5F5',
-				nodes:[{
-					id:'9',
-					text:'管理人员类型',
-					icon:'fa fa-circle-o',
-					url:'frame:admin-type/list.html'
-				},{
-					id:'10',
-					text:'工种管理',
-					icon:'fa fa-circle-o',
-					url:'frame:work-type/list.html'
-				},{
-					id:'10',
-					text:'单位类型',
-					icon:'fa fa-circle-o',
-					url:'frame:useunit-type/list.html'
-				}]
-			}],
-			nodeClick:function(node){
-				var url = node.url;
-				if(url.substring(0,url.indexOf(':'))=='frame'){
-					if(url.substring(url.indexOf(':')+1)!=''){
-						Addtabs.add({
-				            id: node.id,
-				            icon: node.icon,
-				            title: node.name,
-				            close: true,
-				            url: CTX+url.substring(url.indexOf(':')+1)
-			         	});
-					}
-				}
-			}
+	function fnOpenDropdown(){
+		$('#my-dropdown-menu').fadeIn('fast');
+	}
+	
+	
+	function fnShowDesktop(){
+		$('.main-sidebar').show();
+		$('.content-wrapper').show();
+		$('#iframe-wrap').fadeOut('fast',function(){
+			$('#iframe-wrap iframe').removeAttr('src');
 		});
 	}
 	
-	//子页面调用的window窗口
-	var COMMON_CALLBACK = null;
-	function openCommonFrameWin(url,width,height,callback){
-		if(width!=null){
-			oldWinW = width;
-		}
-		if(height!=null){
-			oldWinH = height;
-		}
-		$('#common_frame_win .modal-dialog').width(oldWinW);
-		$('#common_frame_win .modal-body').height(oldWinH);
-		$('#common_frame_win').modal('toggle');
-		window.setTimeout(function(){
-			$('#common_frame_win iframe').attr('src',url);	
-		},300);
-		COMMON_CALLBACK = callback;
+	function goEditPwd(){
+		$('#editpwd_modal').modal('toggle');
 	}
-	//供子页面调用的关闭通用窗口函数
-	function closeCommonFrameWin(returnData){
-		$('#common_frame_win').modal('toggle');
-		//如果有回调则调用回调
-		if(COMMON_CALLBACK){
-			COMMON_CALLBACK(returnData);
+	
+	function goSavePwd(_this){
+		var result = $('#editpwd_form').data('bootstrapValidator');
+		result.validate();
+		if(result.isValid()){
+			$.ajax({
+				url:CTX+'main/edit-pwd',
+				type:'POST',
+				dataType:'json',
+				timeout:10000,
+				data:$("#editpwd_form").serialize(),
+				success:function(json){
+					if(json&&json.code==0){
+						$('#editpwd_modal').modal('toggle');
+						alert('修改成功,重新登录后生效');
+					}else{
+						alert(json.msg);
+					}
+				},
+				error:function(){
+					alert('请求超时或系统出错!');
+				}
+			});
 		}
-		COMMON_CALLBACK = null;
 	}
-	/**
-	 * 最大最小化modal窗口
-	 * @param _this
-	 * @returns
-	 */
-	var oldWinW = window.screen.availWidth-100,oldWinH = window.screen.availHeight-130;
-	function fnMaxModalWin(_this){
+	
+	function goLoginout(){
+		if(window.confirm('确定要退出系统吗?')){
+			window.location.href = CTX+'login/loginout.html';
+		}
+	}
+	
+	function fnMaxModalWin2(_this){
 		if($(_this).find('i').hasClass('fa-square-o')){
 			//执行最大化窗口
 			$(_this).parent().parent().parent().parent().css({'overflow-y':'hidden'});
@@ -347,14 +475,12 @@
 		}else{
 			//还原窗口大小
 			$(_this).parent().parent().parent().parent().css({'overflow-y':'auto'});
-			$(_this).parent().parent().parent().css({width:oldWinW+'px',margin:'8px auto'});
-			$(_this).parent().next().css({height:oldWinH+'px'});
+			$(_this).parent().parent().parent().css({width:'900px',margin:'30px auto'});
+			$(_this).parent().next().css({height:'500px'});
 			$(_this).find('i').removeClass('fa-clone');
 			$(_this).find('i').addClass('fa-square-o');
 		}
 	}
-	
-	
 	var ANNEX_CALLBACK = null;
 	//子页面打开附件管理窗口
 	function openUploadAnnexWin(jsonData,callback){
@@ -373,10 +499,6 @@
 	
 	//打开图片查看窗口
 	function openCommonViewImgWin(annexIds){
-		if(annexIds==''||annexIds==null||annexIds==undefined){
-			flavrAlert('附件不存在',false);
-			return;
-		}
 		loading('加载中...');
 		$.ajax({
 			url:CTX+'annex/query-annex',
@@ -396,7 +518,7 @@
 							imgStr += 
 								'<div class="item '+(i==0?'active':'')+'">'+
 								'	<img src="'+STATIC+annex.relativePath+'" alt="'+annex.name+'" onerror="this.src=\''+STATIC+'images/noPicture.jpg\';" style="margin:0 auto;max-width:100%;"/>'+
-								// '	<div class="carousel-caption">'+annex.name+'</div>'+
+								'	<div class="carousel-caption">'+annex.name+'</div>'+
 								'</div>';
 						}
 					});
@@ -431,10 +553,76 @@
 				}
 			},
 			error:function(){
-				flavrAlert('请求超时或系统错误',false);
+				alert('请求超时或系统错误');
 				loaded();
 			}
 		});
+	}
+	
+	var COMMON_CALLBACK = null;
+	function openCommonFrameWin(url,width,height,callback){
+		if(width!=null){
+			oldWinW = width;
+		}
+		if(height!=null){
+			oldWinH = height;
+		}
+		$('#common_frame_win .modal-dialog').width(oldWinW);
+		$('#common_frame_win .modal-body').height(oldWinH);
+		$('#common_frame_win').modal('toggle');
+		window.setTimeout(function(){
+			$('#common_frame_win iframe').attr('src',url);	
+		},300);
+		COMMON_CALLBACK = callback;
+	}
+	
+	function openMaxCommonFrameWin(url,callback){
+		$('#common_frame_win').modal('toggle');
+		//执行最大化窗口
+		var _this = $('#common_frame_win .max-btn');
+		_this.parent().parent().parent().parent().css({'overflow-y':'hidden'});
+		_this.parent().parent().parent().css({width:$(window).width()+'px',margin:'0px auto'});
+		_this.parent().next().css({height:($(window).height()-$(_this).parent().outerHeight())+'px'});
+		_this.find('i').removeClass('fa-square-o');
+		_this.find('i').addClass('fa-clone');
+		window.setTimeout(function(){
+			$('#common_frame_win iframe').attr('src',url);	
+		},300);
+		COMMON_CALLBACK = callback;
+	}
+	
+	//供子页面调用的关闭通用窗口函数
+	function closeCommonFrameWin(returnData){
+		$('#common_frame_win').modal('toggle');
+		//如果有回调则调用回调
+		if(COMMON_CALLBACK){
+			COMMON_CALLBACK(returnData);
+		}
+		COMMON_CALLBACK = null;
+	}
+	
+	/**
+	 * 最大最小化modal窗口
+	 * @param _this
+	 * @returns
+	 */
+	var oldWinW = window.screen.availWidth-100,oldWinH = window.screen.availHeight-100;
+	function fnMaxModalWin(_this){
+		if($(_this).find('i').hasClass('fa-square-o')){
+			//执行最大化窗口
+			$(_this).parent().parent().parent().parent().css({'overflow-y':'hidden'});
+			$(_this).parent().parent().parent().css({width:$(window).width()+'px',margin:'0px auto'});
+			$(_this).parent().next().css({height:($(window).height()-$(_this).parent().outerHeight())+'px'});
+			$(_this).find('i').removeClass('fa-square-o');
+			$(_this).find('i').addClass('fa-clone');
+		}else{
+			//还原窗口大小
+			$(_this).parent().parent().parent().parent().css({'overflow-y':'auto'});
+			$(_this).parent().parent().parent().css({width:oldWinW+'px',margin:'30px auto'});
+			$(_this).parent().next().css({height:oldWinH+'px'});
+			$(_this).find('i').removeClass('fa-clone');
+			$(_this).find('i').addClass('fa-square-o');
+		}
 	}
 /*]]>*/		
 </script>

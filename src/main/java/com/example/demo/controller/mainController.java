@@ -29,7 +29,7 @@ public class mainController {
         System.out.println("==========================");
         System.out.println("显示主页");
         System.out.println("==========================");
-        return "main";
+        return "home";
     }
 
     @RequestMapping("login")

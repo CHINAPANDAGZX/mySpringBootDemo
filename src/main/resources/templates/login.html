@@ -26,11 +26,11 @@
 			  <legend>登录</legend>
 			</fieldset>
 			 
-			<form class="layui-form" action="">
+			<form class="layui-form" name="form1" action="login/login.html">
 			  <div class="layui-form-item">
 				<label class="layui-form-label">用户名</label>
 				<div class="layui-input-inline">
-				  <input name="title" lay-verify="title" autocomplete="off" placeholder="请输入用户名" class="layui-input" type="text"/>
+				  <input name="username" lay-verify="title" autocomplete="off" placeholder="请输入用户名" class="layui-input" type="text"/>
 				</div>
 			  </div>
 			  <div class="layui-form-item">
@@ -93,22 +93,13 @@
 	  
 	  //监听提交
 	  form.on('submit(demo1)', function(data){
-		layer.alert(JSON.stringify(data.field), {
-		  title: '最终的提交信息'
-		})
-		return false;
+		// layer.alert(JSON.stringify(data.field), {
+		//   title: '最终的提交信息'
+		// })
+		// return false;
+		document.form1.submit();
 	  });
-	 
-	  //表单初始赋值
-	  form.val('example', {
-		"username": "贤心" // "name": "value"
-		,"password": "123456"
-		,"interest": 1
-		,"like[write]": true //复选框选中状态
-		,"close": true //开关状态
-		,"sex": "女"
-		,"desc": "我爱 layui"
-	  })
+
 	  
 	  
 	});
